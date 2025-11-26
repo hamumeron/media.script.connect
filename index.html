@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MSC - Media Script Connect</title>
+<style>
+body { font-family: monospace; padding: 20px; }
+pre { background: #eee; padding: 10px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>MSC</h1>
+<p>Media Script Connect</p>
+
+<input id="url" placeholder="https://example.com" size="50">
+<button onclick="fetchData()">Fetch</button>
+
+<h3>HTML</h3><pre id="html"></pre>
+<h3>CSS</h3><pre id="css"></pre>
+<h3>JavaScript</h3><pre id="js"></pre>
+
+<script>
+async function fetchData(){
+    const u = document.getElementById('url').value;
+    const res = await fetch(`/api?url=${encodeURIComponent(u)}`);
+    const data = await res.json();
+
+    document.getElementById('html').textContent = data.html || "";
+    document.getElementById('css').textContent = (data.css || []).join("\n\n----- NEXT CSS -----\n\n");
+    document.getElementById('js').textContent = (data.scripts || []).join("\n\n----- NEXT SCRIPT -----\n\n");
+}
+</script>
+
+</body>
+</html>
